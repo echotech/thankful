@@ -1,16 +1,28 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, Button, StyleSheet } from 'react-native';
-import { insertNote } from '../database/db'; 
+import { View, TextInput, Text, Button, StyleSheet, Alert } from 'react-native';
+import { insertNote } from '../database/db';  
 
 const MainPage = () => {
   const [input, setInput] = useState('');
 
-  const handleSubmitNote = () => {
-    const currentDate = new Date().toISOString();
-    insertNote(input, currentDate);
-    setInput(''); 
+  const saveInput = async () => {
+    try {
+      // Get the current date in the format YYYY-MM-DD
+      const currentDate = new Date().toISOString().split('T')[0];
+      
+      // Save the input using the SQLite function
+      await insertNote(input, currentDate);
+
+      // Clear the input field
+      setInput('');
+
+      // Optionally show a confirmation message
+      Alert.alert('Saved', 'Your note has been saved successfully!');
+    } catch (error) {
+      console.error('Error saving note:', error);
+      Alert.alert('Error', 'There was a problem saving your note. Please try again.');
+    }
   };
-  
 
   return (
     <View style={styles.container}>
@@ -19,8 +31,14 @@ const MainPage = () => {
         style={styles.input} 
         value={input} 
         onChangeText={text => setInput(text)} 
+        placeholderTextColor="#888"
+        textAlignVertical="center"
+        placeholder="I am thankful for..." 
       />
-      <Button title="Submit" onPress={handleSubmitNote} />
+
+      <View style={styles.buttonContainer}>
+        <Button title="Submit" onPress={saveInput} color="#FF6B6B" />
+      </View>
     </View>
   );
 };
@@ -28,7 +46,7 @@ const MainPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F0F8FF',  // AliceBlue color
+    backgroundColor: '#282c34',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -36,14 +54,20 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+    color: '#EAEAEA',
   },
   input: {
     height: 40,
-    width: '80%',
-    borderColor: 'gray',
+    width: '60%',
+    borderColor: '#FF6B6B',
     borderWidth: 1,
     marginBottom: 20,
     paddingLeft: 10,
+    color: '#EAEAEA',
+    backgroundColor: '#3A3F4B',
+  },
+  buttonContainer: {
+    width: '60%',
   }
 });
 

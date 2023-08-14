@@ -2,19 +2,20 @@ import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import MainPage from '../screens/MainPage';
-import HistoryPage from './HistoryPage'; // You'll need to create this component
+import HistoryPage from '../screens/HistoryPage'; 
 
-const Drawer = createDrawerNavigator();
+const DrawerNavigator = createDrawerNavigator();
 
-const App = () => {
+const Drawer = () => {
   return (
     <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Home">
-        <Drawer.Screen name="Home" component={MainPage} />
-        <Drawer.Screen name="History" component={HistoryPage} />
-      </Drawer.Navigator>
+     <DrawerNavigator.Navigator initialRouteName="Home">
+   <DrawerNavigator.Screen name="Home" component={MainPage} />
+   {/* Comment out HistoryPage */}
+   {/* <DrawerNavigator.Screen name="History" component={HistoryPage} /> */}
+</DrawerNavigator.Navigator>
     </NavigationContainer>
   );
 };
 
-export default App;
+export default Drawer;

@@ -7,7 +7,7 @@ const db = SQLite.openDatabase(
   },
   () => console.log('Database opened!'),
   error => {
-    console.error('Database opening error: ', error);
+    console.error('Database opening error: ', error.message);
   }
 );
 
@@ -21,7 +21,7 @@ const setupDatabase = () => {
       );`,
       [],
       (_, results) => console.log('Table created successfully!'),
-      (_, error) => console.error('Table creation error:', error)
+      (_, error) => console.error('Table creation error:', error.message)
     );
   });
 };
@@ -31,7 +31,7 @@ export const insertNote = (noteText, currentDate) => {
     tx => {
       tx.executeSql('INSERT INTO thankful_notes (note, date) VALUES (?, ?)', [noteText, currentDate]);
     },
-    (error) => console.error('Error inserting note:', error)
+    (error) => console.error('Error inserting note:', error.message)
   );
 };
 
@@ -46,7 +46,7 @@ export const getNotesBetweenDates = (startDate, endDate, callback) => {
         }
       );
     },
-    (error) => console.error('Error fetching notes:', error)
+    (error) => console.error('Error fetching notes:', error.message)
   );
 };
 
@@ -61,7 +61,7 @@ export const getAllNotes = (callback) => {
         }
       );
     },
-    (error) => console.error('Error fetching all notes:', error)
+    (error) => console.error('Error fetching all notes:', error.message)
   );
 };
 
